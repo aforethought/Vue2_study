@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/template_syntax.css">
+</head>
+
+<body>
+    <div id="app">
+        <div class="tab">
+            <!-- 注意(item,index) in之间要有空格 -->
+            <ul>
+                <li v-on:click='change(index)' :class='currentIndex==index?"active":""' :key="item.id" v-for='(item,index) in list'>{{item.title}}</li>
+            </ul>
+            <div :class='currentIndex==index?"current":""' :key="item.id" v-for="(item,index) in list">
+                <img :src="item.path" alt="">
+                <!-- 记得属性绑定v-bind，简写: -->
+            </div>
+
+        </div>
+    </div>
+
+</body>
+<!-- <script type="text/javascript" src="lib/vue.js"></script> -->
+<script type="text/javascript" src="vue2/vue.js"></script>
+<script type="text/javascript">
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            currentIndex: 0, //选项卡当前的索引
+            list: [{
+                id: 1,
+                title: '掌控习惯',
+                path: 'img/Controlthehabit_cover.jpg'
+            }, {
+                id: 2,
+                title: '项目管理',
+                path: 'img/manager_cover.jpg'
+            }, {
+                id: 3,
+                title: '时间管理',
+                path: 'img/Controlthehabit_cover.jpg'
+            }, ]
+        },
+        methods: {
+            change: function(index) {
+                //这里实现选项卡切换操作：本质就是操作类名
+                //如何操作类名？就是通过currentIndex
+                this.currentIndex = index;
+            }
+
+        }
+    })
+</script>
+
+</html>
