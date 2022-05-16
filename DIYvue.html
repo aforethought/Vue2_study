@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./lib/vue.js"></script>
+</head>
+
+<body>
+    <div id="app"></div>
+    <input type="button" value="搞起来" @click="wow">
+    <input type="button" value="低调">
+
+    <h4>{{ msg }}</h4>
+    <script>
+        //注意：在VM实例中，如果想获取data上的数据，或者想要调用methods 中的方法，必须通过
+        //this.数据属性名 或 this.方法名来进行访问，
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                msg: '王奕~王奕~我喜欢你！！',
+            },
+            methods: {
+                wow() {
+                    var _this = this
+                    setInterval(() => {
+                        console.log(this.msg)
+                        var start = _this.msg.substring(0, 1)
+                        var end = _this.msg.substring(1)
+                        _this.msg = end + start
+                    }, 400)
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

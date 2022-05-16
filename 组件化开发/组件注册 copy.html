@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>调试工具的基本使用</title>
+    <style>
+        .second {
+            background-color: rgb(231, 228, 42);
+        }
+        
+        .third {
+            background-color: rgb(44, 190, 183);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div>{{root}}</div>
+        <second-com></second-com>
+        <second-com></second-com>
+    </div>
+
+</body>
+<script type="text/javascript" src="../vue2/vue.js"></script>
+<script type="text/javascript">
+    /*调试工具的安装与基本使用
+     */
+
+    //--------------------------------------------------------------
+    Vue.component('second-com', {
+        data: function() {
+            //提供具体的对象
+            return {
+                second: '二级组件'
+            }
+        },
+        template: `
+        <div class='second'>
+            <div>{{second}}</div>
+            <third-com></third-com>
+            <third-com></third-com>
+            <third-com></third-com>
+        </div>
+    `
+    });
+    Vue.component('third-com', {
+        data: function() {
+            return {
+                third: '三级组件'
+            }
+        },
+        template: '<div class="third"><div>{{third}}</div></div>'
+    })
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            root: '顶层组件'
+        },
+
+    })
+</script>
+
+</html>

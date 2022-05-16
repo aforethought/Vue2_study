@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>（携带参数）子组件向父组件传值</title>
+
+</head>
+
+<body>
+    <div id="app">
+        <!-- 这个div里面都属于父组件的模板 -->
+        <div :style="{fontSize:fontSize + 'px'}">{{pmsg}}</div>
+        <!-- 注意这里绑定的事件要和下面自定义的名称$emit("enlarge-text")保持一致 -->
+        <menu-item :parr="parr" @enlarge-text="handle"></menu-item>
+    </div>
+</body>
+<script type="text/javascript" src="../vue2/vue.js"></script>
+<script type="text/javascript">
+    /*子组件向父组件传值--携带参数
+                                                    <button @click='$emit("enlarge-text",5)'>扩大父组件中的字体</button>
+                                                                                参数5 会传递到父组件对应的事件
+                                                                                之后要怎么处理
+                                                                                通过@enlarge-text="handle($event)"就可以获取到对应的值
+                                                                                再通过val参数来接收handle: function(val) {}
+                                                                                 */
+
+    //--------------------------------------------------------------
+    Vue.component('menu-item', {
+        props: ['parr'],
+        template: `
+        <div>
+            <ul>
+                <li :key='index' v-for="(item,index) in parr">{{item}}</li>
+            </ul>
+            <button @click='$emit("enlarge-text",5)'>扩大父组件中的字体</button>
+            <button @click='$emit("enlarge-text",10)'>扩大父组件中的字体</button>
+        </div>
+        `
+    });
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            pmsg: '父组件中的内容',
+            parr: ['apple', 'banana', 'pear'],
+            //要有一个属性来保存字体的大小
+            fontSize: 10
+        },
+        methods: {
+            handle: function(val) {
+                //扩大字体的大小，要有一个属性来保存字体的大小
+                this.fontSize += val;
+            }
+        }
+
+    })
+</script>
+
+</html>

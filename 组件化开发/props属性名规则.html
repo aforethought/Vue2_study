@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>props属性名规则</title>
+
+</head>
+
+<body>
+    <div id="app">
+        <div>{{pmsg}}</div>
+        <!-- 在props中使用驼峰形式，（在html中）模板中需要使用短横线形式 -->
+        <menu-item :menu-title="ptitle"></menu-item>
+    </div>
+</body>
+<script type="text/javascript" src="../vue2/vue.js"></script>
+<script type="text/javascript">
+    /*props属性名规则
+     */
+
+    //--------------------------------------------------------------
+    Vue.component('third-com', {
+        props: ['titleTest'],
+        template: '<div>{{testTitle}}</div>'
+    });
+    Vue.component('menu-item', {
+        props: ['menuTitle'],
+        //字符串形式的模板中没有这个限制,可以使用驼峰式
+        template: '<div>{{menuTitle}}<third-com testTitle></third-com></div>'
+    });
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            pmsg: '父组件中的内容',
+            ptitle: '动态绑定属性'
+        },
+
+    })
+</script>
+
+</html>

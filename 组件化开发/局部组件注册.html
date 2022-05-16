@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>局部组件注册</title>
+
+</head>
+
+<body>
+    <div id="app">
+        <hello-world></hello-world>
+        <hello-tom></hello-tom>
+        <hello-maya></hello-maya>
+        <!-- 可以出现结果 -->
+        <test-com></test-com>
+    </div>
+</body>
+<script type="text/javascript" src="../vue2/vue.js"></script>
+<script type="text/javascript">
+    /*局部组件注册
+                            var ComponentA = { }
+                            var ComponentB = { }
+                            var ComponentC = { }
+                            new Vue({
+                                el:'#app'
+                                components:{
+                                   'component-a':ComponentA,
+                                   'component-b':ComponentB,
+                                   'component-c':ComponentC,
+                                }
+                            })
+                             */
+    /*
+ 在Vue实例里边添加components属性
+ 左边是组件名称，右边是组件内容，组件内容可以抽取到一个对象当中，
+ 这个对象所包含的信息和之前在定义全局组件时Vue.component()的第二个参数类似，可以包含data、template这些属性
+    */
+    //--------------全局组件注册------------------------------------------------
+    //全局组件注册
+    /*
+    Vue.component('button-counter', {
+        data: function() {
+            //提供具体的对象
+            return {
+                count: 0
+            }
+        },
+        //模板内容是字符串，可以写Vue所支持的模板语法
+        //template: '<button @click="count++">点击了{{count}}次</button>',
+        template: `
+        <div>
+            <button @click="handle">点击了{{count}}次</button>
+            <button>测试</button>
+        </div>
+    `,
+        methods: {
+            handle: function() {
+                this.count += 2;
+            }
+        }
+    })
+    */
+
+
+    //--------------局部组件注册------------------------------------------------
+    //先单独定义再引入到components当中，会比较简洁
+    //用这种方式注册只能在注册它的父组件中使用，别的地方用不了！例如不能在下面的全局组件中使用
+    Vue.component('test-com', {
+        template: '<div>Test<hello-tom></hello-tom></div>'
+    });
+    var HelloWorld = {
+        data: function() {
+            return {
+                msg: 'HelloWorld'
+            }
+        },
+        template: '<div>{{msg}}</div>'
+    };
+    var HelloTom = {
+        data: function() {
+            return {
+                msg: 'HelloTom'
+            }
+        },
+        template: '<div>{{msg}}</div>'
+    };
+    var HelloMaya = {
+        data: function() {
+            return {
+                msg: 'HelloMaya'
+            }
+        },
+        template: '<div>{{msg}}</div>'
+    };
+    var vm = new Vue({
+        el: '#app',
+        data: {
+
+        },
+        components: {
+            'hello-world': HelloWorld,
+            'hello-tom': HelloTom,
+            'hello-maya': HelloMaya,
+
+        }
+
+    })
+</script>
+
+</html>

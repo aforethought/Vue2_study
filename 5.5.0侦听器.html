@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5.5侦听器</title>
+    <link rel="stylesheet" href="css/template_syntax.css">
+</head>
+
+<body>
+    <div id="app">
+        <div>
+            <span>名：</span>
+            <span>
+        <input type="text" v-model="firstName">
+          </span>
+        </div>
+        <div>
+            <span>姓：</span>
+            <span>
+        <input type="text"  v-model="lastName">
+          </span>
+        </div>
+        <div>{{fullName}}</div>
+    </div>
+</body>
+<script type="text/javascript" src="vue2/vue.js"></script>
+<script type="text/javascript">
+    /*5.5侦听器--应用场景
+    数据变化时执行异步或开销较大的操作*/
+
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            firstName: 'Maya',
+            lastName: 'Chan',
+            fullName: 'Maya Chan'
+        },
+        //计算属性的实现方式--就不需要data中的fullName: 'Maya Chan'，否则会报错说fullName已经存在了
+        computed: {
+            /* fullName: function() {
+                 return this.firstName + ' ' + this.lastName;
+             }*/
+        },
+        watch: {
+            firstName: function(val) {
+                this.fullName = val + ' ' + this.lastName;
+            },
+            lastName: function(val) {
+                this.fullName = this.firstName + ' ' + val;
+            }
+        }
+    })
+</script>
+
+</html>

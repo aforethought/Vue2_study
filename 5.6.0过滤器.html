@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5.6.0过滤器</title>
+    <link rel="stylesheet" href="css/template_syntax.css">
+</head>
+
+<body>
+    <div id="app">
+
+        <input type="text" v-model="msg">
+        <div>{{msg | upper}}</div>
+        <div>{{msg | upper | lower}}</div>
+        <!-- 被处理了两次，首字母先变成大写，再从大写变为小写 -->
+        <div :abc="msg | upper">测试数据</div>
+        <!-- 打开DOM看一下这个元素，看一下它的属性abc=" "首字母是否大写 -->
+
+    </div>
+</body>
+<script type="text/javascript" src="vue2/vue.js"></script>
+<script type="text/javascript">
+    /*5.6.0过滤器
+                    可以级联
+                    可以用插值表达式
+                    也可以用属性绑定（绑定属性时也可以用到）
+                    还支持局部的过滤器
+                    vue实例本身就是一个组件
+                     */
+    /*Vue.filter('upper', function(val) {
+        return val.charAt(0).toUpperCase() + val.slice(1)
+    }); */
+    Vue.filter('lower', function(val) {
+        return val.charAt(0).toLowerCase() + val.slice(1)
+    });
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            msg: '',
+        },
+        filters: {
+            upper: function(val) {
+                return val.charAt(0).toUpperCase() + val.slice(1);
+            }
+        }
+
+    })
+</script>
+
+</html>

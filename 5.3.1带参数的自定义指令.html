@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>表单修饰符</title>
+    <link rel="stylesheet" href="css/template_syntax.css">
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" v-color="msg">
+    </div>
+
+</body>
+<!-- <script type="text/javascript" src="lib/vue.js"></script> -->
+<script type="text/javascript" src="vue2/vue.js"></script>
+<script type="text/javascript">
+    /*自定义指令--带参数*/
+    /*Vue提供的API来进行定义，如下*/
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            //msg: 'hello',
+            msg: {
+                color: 'orange',
+            }
+
+        },
+        methods: {
+            handle: function() {
+
+            }
+        }
+    })
+</script>
+
+</html>

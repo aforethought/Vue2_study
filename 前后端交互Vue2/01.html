@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promise 用法</title>
+</head>
+
+<body>
+    <div>前后端交互</div>
+
+    <!-- $.ajax({
+        url: 'https://api.xygeng.cn/one/get',
+        success: function(data) {
+            console.log(data)
+        }
+    }) -->
+    <script src="./js/jquery-3.4.1.js"></script>
+    <script>
+        /*前后端交互--异步编程与promise概述*/
+
+
+        /*
+                function queryData(url) {
+                    return new Promise(function(resolve, reject) {
+                        var xhr = new XMLHttpRequest();
+                        //指定一个回调函数
+                        xhr.onreadystatechange = function() {
+                            if (xhr.readyState != 4) return;
+                            if (xhr.status == 200) {
+                                resolve(xhr.responseText)
+                            } else {
+                                reject('error');
+                            }
+                        };
+                        xhr.open('get', url);
+                        xhr.send(null);
+                    });
+                    return p;
+                }*/
+
+        /*代码优化了一点*/
+
+        function queryData(url) {
+            return new Promise(function(resolve, reject) {
+                var xhr = new XMLHttpRequest();
+                //指定一个回调函数
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState != 4) return;
+                    if (xhr.status == 200) {
+                        resolve(xhr.responseText)
+                    } else {
+                        reject('error');
+                    }
+                };
+                xhr.open('get', url);
+                xhr.send(null);
+            });
+        }
+        /*
+        queryData('https://api.xygeng.cn/one/get/')
+            .then(function(data) {
+                console.log(data);
+            }, function(info) {
+                console.log(info)
+            });*/
+        //=========================================================
+        //发送多个Ajax请求，并且保证顺序
+        //queryData('https://api.xygeng.cn/one/get/')
+    </script>
+</body>
+
+</html>

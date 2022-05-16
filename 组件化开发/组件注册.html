@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组件注册</title>
+
+</head>
+
+<body>
+    <div id="app">
+        <button-counter></button-counter>
+    </div>
+</body>
+<script type="text/javascript" src="../vue2/vue.js"></script>
+<script type="text/javascript">
+    /*组件注册
+     */
+    /*
+    Vue.component('button-counter', {
+        data: function() {
+            //提供具体的对象
+            return {
+                count: 0
+            }
+        },
+        //模板内容是字符串，可以写Vue所支持的模板语法
+        //template: '<button @click="count++">点击了{{count}}次</button>',
+        template: '<button @click="handle">点击了{{count}}次</button>',
+        methods: {
+            handle: function() {
+                this.count += 2;
+            }
+        }
+    })
+    */
+    //--------------------------------------------------------------
+    Vue.component('button-counter', {
+        data: function() {
+            //提供具体的对象
+            return {
+                count: 0
+            }
+        },
+        //模板内容是字符串，可以写Vue所支持的模板语法
+        //template: '<button @click="count++">点击了{{count}}次</button>',
+        template: `
+        <div>
+            <button @click="handle">点击了{{count}}次</button>
+            <button>测试</button>
+        </div>
+    `,
+        methods: {
+            handle: function() {
+                this.count += 2;
+            }
+        }
+    })
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            firstName: 'Maya',
+            lastName: 'Chan',
+            fullName: 'Maya Chan'
+        },
+
+    })
+</script>
+
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue常用特性--5.4计算属性</title>
+    <link rel="stylesheet" href="css/template_syntax.css">
+</head>
+
+<body>
+    <div id="app">
+        <!--只会出现一次computed--对于同样的数据，即msg的值不会变化，调用第二次时会去找之前的缓存，只用第一次计算的那个结果-->
+        <div>{{reverseString}}</div>
+        <div>{{reverseString}}</div>
+        <!-- 会出现两次methods--每调用一次都会执行一下这个函数 -->
+        <div>{{reverseString()}}</div>
+        <div>{{reverseString()}}</div>
+        <!-- 注意函数是需要用一个来调用的 -->
+        <!-- 函数调用也属于表达式，所以可以直接放在插值表达式中 -->
+    </div>
+
+</body>
+<!-- <script type="text/javascript" src="lib/vue.js"></script> -->
+<script type="text/javascript" src="vue2/vue.js"></script>
+<script type="text/javascript">
+    /*计算属性与方法的区别*/
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            msg: 'hello',
+            num: 100
+        },
+        methods: {
+            reverseMessage: function() {
+                console.log('methods')
+                return this.msg.split('').reverse().join('');
+            }
+        },
+        computed: {
+            reverseString: function() {
+                console.log('conputed')
+                    //return this.msg.split('').reverse().join('');
+                    //注意要return 返回去，才能得到想要的结果，还有要用 this 来获取到内容
+                    //下面的计算量可能会比较大   有报错
+                var total = 0;
+                for (var i = 0; i <= this.num; i++) {
+                    total += i;
+                }
+                return total;
+            }
+        }
+    })
+</script>
+
+</html>

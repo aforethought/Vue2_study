@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue常用特性--5.4计算属性</title>
+    <link rel="stylesheet" href="css/template_syntax.css">
+</head>
+
+<body>
+    <div id="app">
+        <div>{{msg}}</div>
+        <div>------</div>
+        <div>{{msg.split('').reverse().join('')}}</div>
+        <!-- 上面的表达式的计算逻辑可能比较复杂，使用计算属性可以使模板内容更加简洁 -->
+        <!-- msg.split('')分割后就会变成数组，然后用数组的reverse()方法进行反转，再用join('')进行拼接 -->
+        <div>------</div>
+        <div>{{reverseString}}</div>
+    </div>
+
+</body>
+<!-- <script type="text/javascript" src="lib/vue.js"></script> -->
+<script type="text/javascript" src="vue2/vue.js"></script>
+<script type="text/javascript">
+    /*计算属性--计算属性是基于data中的数据来处理的 例如通过控制台改变data数据，计算属性中的值也会变*/
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            msg: 'hello',
+        },
+        computed: {
+            reverseString: function() {
+                return this.msg.split('').reverse().join('');
+                //注意要return 返回去，才能得到想要的结果，还有要用 this 来获取到内容
+            }
+        }
+    })
+</script>
+
+</html>

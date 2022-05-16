@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>兄弟组件之间数据传递</title>
+
+</head>
+
+<body>
+    <div id="app">
+        <div>父组件</div>
+        <div>
+            <button @click="handle">事件销毁</button>
+        </div>
+        <test-tom></test-tom>
+        <test-maya></test-maya>
+    </div>
+</body>
+<script type="text/javascript" src="../vue2/vue.js"></script>
+<script type="text/javascript">
+    /*兄弟组件之间数据传递
+     */
+    //提供事件中心,在这个hub当中就可以进行事件的监听，组件内部什么时候进行监听？
+    //一般就用mounted钩子函数
+    var hub = new Vue();
+    //--------------------------------------------------------------
+    //一个组件
+    Vue.component('test-tom', {
+        data: function() {
+            return {
+                num: 0
+            }
+        },
+        template: `
+        <div>
+          <div>Tom：{{num}}</div>
+          <div>
+              <button @click='handle'>点击</button>
+          </div>
+
+        </div>
+        `,
+        methods: {
+            handle: function() {
+                //触发兄弟组件的事件
+                hub.$emit('maya-event', 1);
+            }
+        },
+        mounted: function() {
+            //监听事件  要用到this，所以用箭头函数
+            //val是兄弟组件传过来的(val) => {} 接收传来的参数
+
+            hub.$on('tom-event', (val) => {
+                //拿到val这个值之后让当前的num进行累加操作
+                this.num += val;
+            })
+        }
+    });
+    //上面组件的兄弟组件
+    Vue.component('test-maya', {
+        data: function() {
+            return {
+                num: 0
+            }
+        },
+        template: `
+        <div>
+          <div>Maya：{{num}}</div>
+          <div>
+              <button @click='handle'>点击</button>
+          </div>
+
+        </div>
+        `,
+        methods: {
+            handle: function() {
+                //触发兄弟组件的事件
+                hub.$emit('tom-event', 2);
+            }
+        },
+        mounted: function() {
+            //监听事件  要用到this，所以用箭头函数
+            //val是兄弟组件传过来的
+            hub.$on('maya-event', (val) => {
+                this.num += val;
+            })
+        }
+    });
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            pmsg: '父组件中的内容',
+            parr: ['apple', 'banana', 'pear'],
+            //要有一个属性来保存字体的大小
+            fontSize: 10
+        },
+        methods: {
+            handle: function() {
+                hub.$off('$tom-event');
+                hub.$off('$maya-event');
+            }
+        }
+
+    })
+</script>
+
+</html>

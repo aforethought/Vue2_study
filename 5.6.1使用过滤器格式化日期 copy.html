@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5.6.1使用过滤器格式化日期</title>
+    <link rel="stylesheet" href="css/template_syntax.css">
+</head>
+
+<body>
+    <div id="app">
+        <!-- <div>{{date | format('abc','nihao')}}</div> -->
+        <div>{{date | format('yyyy-MM-dd')}}</div>
+    </div>
+</body>
+<script type="text/javascript" src="vue2/vue.js"></script>
+<script type="text/javascript">
+    /*5.6.1使用过滤器格式化日期
+     */
+    //上面的yyyy-MM-dd就会传递给arg
+    Vue.filter('format', function(value, arg) {
+        if (arg == 'yyyy-MM-dd') {
+            var ret = '';
+            ret += value.getFullYear() + '-' + (value.getMonth() + 1) + '-' + value.getDate();
+            return ret;
+        }
+        return value;
+    });
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            date: new Date(),
+        }
+    })
+</script>
+
+</html>

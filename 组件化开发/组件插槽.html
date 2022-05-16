@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组件插槽</title>
+</head>
+
+<body>
+    <div id="app">
+        <alert-box>有bug发生</alert-box>
+        <alert-box>有一个警告</alert-box>
+        <alert-box></alert-box>
+        <!-- 组件标签内的内容会传递到 <slot></slot>里面 -->
+        <!-- 结果是：
+        ERROR: 有bug发生
+        ERROR: 有一个警告
+        ERROR: 有默认内容 -->
+    </div>
+    <script type="text/javascript" src="../vue2/vue.js"></script>
+    <script type="text/javascript">
+        /*
+                                        组件插槽
+                                        */
+        Vue.component('alert-box', {
+            template: `
+    <div>
+        <strong>ERROR:</strong>
+        <slot>有默认内容</slot>
+    </div>
+    `
+        });
+        var vm = new Vue({
+            el: '#app',
+            data: {
+
+            }
+        })
+    </script>
+</body>
+
+</html>

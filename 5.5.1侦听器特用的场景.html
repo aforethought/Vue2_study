@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5.5侦听器</title>
+    <link rel="stylesheet" href="css/template_syntax.css">
+</head>
+
+<body>
+    <div id="app">
+        <div>
+            <span>用户名：</span>
+            <span>
+        <input type="text" v-model.lazy="uname">
+          </span>
+            <span>{{tip}}</span>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="vue2/vue.js"></script>
+<script type="text/javascript">
+    /*5.5侦听器--特用的应用场景--验证用户名是否可用
+                                        数据变化时执行异步或开销较大的操作
+                                        1、采用侦听器监听用户名的变化
+                                        2、调用后台接口进行验证
+                                        3、根据验证的结果调整提示信息
+                                        */
+
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            uname: '',
+            tip: '',
+        },
+        methods: {
+            checkName: function(uname) {
+                //调用接口(是异步的)，但可以使用定时任务的方式模拟接口的调用（就不用提供后台接口）
+                //setTimeout中的this是指向window 的，所以要先缓存一下this
+                var that = this;
+                setTimeout(function() {
+                    //这个函数模拟接口调用
+                    if (uname == 'admin') {
+                        that.tip = '用户名已经存在，请更换一个';
+                    } else {
+                        that.tip = '用户名可以使用';
+                    }
+                }, 2000);
+            }
+        },
+        watch: {
+            uname: function(val) {
+                //调用后台接口验证用户名的合法性
+                this.checkName(val); //把输入的最新的值传进去验证
+                //修改提示信息
+                this.tip = '正在验证...'
+
+            }
+        }
+    })
+</script>
+
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组件化的购物车</title>
+    <style>
+        img {
+            width: 30px;
+            height: 30px;
+            float: left;
+        }
+        
+        a {
+            text-decoration: none;
+        }
+        
+        .del {
+            display: inline;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="container">
+            <my-cart></my-cart>
+        </div>
+    </div>
+    </div>
+    <script type="text/javascript" src="../vue2/vue.js"></script>
+    <script type="text/javascript">
+        var CartTitle = {
+            props: ['uname'],
+            template: `
+            <div class="title">
+                {{uname}}的商品
+            </div>
+            `
+        };
+        var CartList = {
+            props: ['list'],
+            //注意属性的填充要加上绑定
+            template: `
+            <div>
+                <div :key='item.id' v-for="item in list" class="item">
+                    <img :src="item.img" alt="">
+                    <div class="name">{{item.name}}</div>
+                    <div class="change">
+                        <a href="">-</a>
+                        <input type="text" class="num" :value='item.num' @blur='changeNum(item.id,$event)'>
+                        <a href="">+</a>
+                    </div>
+                    <div class="del" @click='del(item.id)'>x</div>
+                </div>
+                
+            </div>
+            `,
+            methods: {
+                //还是由父组件来完成，所以要把@blur='changeNum(item.id)中的id传过来
+                //还要告诉父组件你修改的值是多少
+                //需要在父组件中进行监听
+                changeNum: function(id, event) {
+                    //先测试能否成功拿到当前输入的最新的值
+                    //console.log(id, event.target.value)
+                    this.$emit('change-num', {
+                        id: id,
+                        num: event.target.value
+
+                    })
+                },
+                //删除操作应该在父组件中处理,因为不推荐在子组件中直接去操作props中的数据
+                //告诉父组件要删除哪一个id就可以了@click='del(item.id)'
+                //下面要接收一下del:function(id){},可以打印一下看看能不能获取得到
+                //拿到id之后就需要【子组件】把这个id传递给父组件
+                //--用自定义事件 this.$emit('cart-del',id)并且要携带id把信息传递给父组件
+                //【父组件需要监听事件】<cart-list :list='list' @cart-del='delCart($event)'></cart-list>
+                //注意@cart-del='delCart'中的处理函数delCart【记得下边要定义】应该接收子组件传过来的id--通过delCart($event)
+                del: function(id) {
+                    console.log(id)
+                    this.$emit('cart-del', id);
+                }
+            }
+        };
+        var CartTotal = {
+            props: ['list'],
+            template: `
+            <div class="total">
+                <span>总价：{{total}}</span>
+                <button>结算</button>
+            </div>
+            `,
+            computed: {
+                total: function() {
+                    //计算商品的总价
+                    var t = 0;
+                    this.list.forEach(item => {
+                        t += item.price * item.num;
+                    });
+                    return t;
+                }
+            }
+        };
+        Vue.component('my-cart', {
+            data: function() {
+                return {
+                    name: '张三',
+                    list: [{
+                        id: 1,
+                        name: 'TCL彩电',
+                        price: 1000,
+                        num: 1,
+                        img: '../img/a.png'
+                    }, {
+                        id: 2,
+                        name: '机顶盒',
+                        price: 1000,
+                        num: 2,
+                        img: '../img/b.png'
+                    }, {
+                        id: 3,
+                        name: '冰箱',
+                        price: 1000,
+                        num: 1,
+                        img: '../img/c.png'
+                    }, {
+                        id: 4,
+                        name: '空调',
+                        price: 1000,
+                        num: 1,
+                        img: '../img/d.png'
+                    }, {
+                        id: 5,
+                        name: '小米手机',
+                        price: 3000,
+                        num: 3,
+                        img: '../img/a.png'
+                    }, ]
+                }
+            },
+            //uname通过属性的方式传递给cart-title这个组件
+            //上面定义的CartTitle就要得到对应的值了，用props来接收得到uname，这样就可以在模板中使用了
+            //list属性传递给total组件<cart-total :list='list'></cart-total>
+            //上面也要接收绑定的list属性 props: ['list'],拿到数据后就可以用【计算属性】来计算了
+            //【父组件需要监听事件】<cart-list :list='list' @cart-del='delCart($event)'></cart-list>
+            //注意@cart-del='delCart'中的处理函数delCart【记得下边要定义】应该接收子组件传过来的id--通过delCart($event)
+            template: `
+            <div class='cart'>
+                <cart-title :uname='name'></cart-title>
+                <cart-list :list='list' @change-num='changeNum($event)' @cart-del='delCart($event)'></cart-list>
+                <cart-total :list='list'></cart-total>
+            </div>
+            `,
+            components: {
+                'cart-title': CartTitle,
+                'cart-list': CartList,
+                'cart-total': CartTotal,
+                //需要组件的内容，单独在上面定义,把存放组件内容的变量放到定义的组件名称后面就可以了
+            },
+            methonds: {
+                changeNum: function(val) {
+                    //测试那个值有没有传递过来
+                    console.log(val)
+                        //根据子组件传递过来的数据，更新list中对应的数据
+                    this.list.some(item => {
+                        if (item.id == val.id) {
+                            item.num = val.num;
+                            //终止遍历
+                            return true;
+                        }
+                    })
+                },
+                delCart: function(id) {
+                    //根据id删除list中对应的数据：//【1】找到id对应数据的索引，有一个专门的API；【2】根据索引删除对应数据
+                    //【1】找到id对应数据的索引，有一个专门的API
+                    var index = this.list.findIndex(item => {
+                        //item.id找到的id；id--传过来的id
+                        return item.id == id;
+                    });
+                    //【2】根据索引删除对应数据splice(index,1)中的1是删除的个数
+                    this.list.splice(index, 1);
+                }
+            },
+        });
+        var vm = new Vue({
+            el: '#app',
+            data: {
+
+
+            }
+        })
+    </script>
+</body>
+
+</html>
